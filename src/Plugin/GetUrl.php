@@ -1,6 +1,6 @@
 <?php
 
-namespace Enl\Flysystem\Cloudinary\Plugin;
+namespace WeAreModus\Flysystem\Cloudinary\Plugin;
 
 class GetUrl extends AbstractPlugin
 {
@@ -9,12 +9,12 @@ class GetUrl extends AbstractPlugin
      *
      * @return string
      */
-    public function getMethod()
+    public function getMethod(): string
     {
         return 'getUrl';
     }
 
-    public function handle($path, $options = [])
+    public function handle(string $path, array $options = []): string
     {
         return $this->apiFacade->url($path, $options);
     }

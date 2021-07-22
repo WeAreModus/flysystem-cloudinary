@@ -1,6 +1,6 @@
 <?php
 
-namespace Enl\Flysystem\Cloudinary\Plugin;
+namespace WeAreModus\Flysystem\Cloudinary\Plugin;
 
 class ReadTransformation extends AbstractPlugin
 {
@@ -9,7 +9,7 @@ class ReadTransformation extends AbstractPlugin
      *
      * @return string
      */
-    public function getMethod()
+    public function getMethod(): string
     {
         return 'readTransformation';
     }

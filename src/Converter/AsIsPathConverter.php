@@ -1,8 +1,8 @@
 <?php
 
-namespace Enl\Flysystem\Cloudinary\Converter;
+namespace WeAreModus\Flysystem\Cloudinary\Converter;
 
-use Cloudinary\Api\Response;
+use Cloudinary\Api\ApiResponse;
 
 /**
  * Class AsIsPathConverter
@@ -15,9 +15,10 @@ class AsIsPathConverter implements PathConverterInterface
      * Converts path to public Id
      *
      * @param string $path
+     *
      * @return string
      */
-    public function pathToId($path)
+    public function pathToId(string $path): string
     {
         return $path;
     }
@@ -25,11 +26,12 @@ class AsIsPathConverter implements PathConverterInterface
     /**
      * Converts id to path
      *
-     * @param Response $resource
+     * @param ApiResponse $id
+     *
      * @return string
      */
-    public function idToPath($resource)
+    public function idToPath(array $id): string
     {
-        return $resource['public_id'];
+        return $id['public_id'];
     }
 }

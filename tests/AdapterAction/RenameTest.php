@@ -1,20 +1,20 @@
 <?php
 
-namespace Enl\Flysystem\Cloudinary\Test\AdapterAction;
+namespace WeAreModus\Flysystem\Cloudinary\Test\AdapterAction;
 
-use Cloudinary\Error;
+use Cloudinary\Api\Exception\ApiError;
 
 /**
  * Class RenameTest
- * @package Enl\Flysystem\Cloudinary\Test\AdapterAction
- * @todo what to do with folder rename?
+ * @package WeAreModus\Flysystem\Cloudinary\Test\AdapterAction
+ * @todo    what to do with folder rename?
  */
 class RenameTest extends ActionTestCase
 {
     public function testReturnsFalseOnFailure()
     {
         list($cloudinary, $api) = $this->buildAdapter();
-        $api->rename('old', 'new')->willThrow(Error::class);
+        $api->rename('old', 'new')->willThrow(ApiError::class);
         $this->assertFalse($cloudinary->rename('old', 'new'));
     }
 

@@ -1,22 +1,26 @@
 <?php
 
-namespace Enl\Flysystem\Cloudinary;
+namespace WeAreModus\Flysystem\Cloudinary;
 
-use Cloudinary\Api;
+use Cloudinary\Api\Exception\ApiError;
 use League\Flysystem\Adapter\Polyfill\NotSupportingVisibilityTrait;
 use League\Flysystem\Adapter\Polyfill\StreamedCopyTrait;
 use League\Flysystem\Adapter\Polyfill\StreamedTrait;
 use League\Flysystem\AdapterInterface;
 use League\Flysystem\Config;
-use League\Flysystem\Filesystem;
 
 class CloudinaryAdapter implements AdapterInterface
 {
-    /** @var ApiFacade */
-    private $api;
+    private ApiFacade $api;
 
-    use NotSupportingVisibilityTrait; // We have no visibility for paths, due all of them are public
-    use StreamedTrait; // We have no streaming in Cloudinary API, so we need this polyfill
+    use NotSupportingVisibilityTrait;
+
+    // We have no visibility for paths, due all of them are public
+
+    use StreamedTrait;
+
+    // We have no streaming in Cloudinary API, so we need this polyfill
+
     use StreamedCopyTrait;
 
     public function __construct(ApiFacade $api)
@@ -29,7 +33,7 @@ class CloudinaryAdapter implements AdapterInterface
      *
      * @param string $path
      * @param string $contents
-     * @param Config $config   Config object
+     * @param Config $config Config object
      *
      * @return array|false false on failure file meta data on success
      */
@@ -49,7 +53,7 @@ class CloudinaryAdapter implements AdapterInterface
      *
      * @param string $path
      * @param string $contents
-     * @param Config $config   Config object
+     * @param Config $config Config object
      *
      * @return array|false false on failure file meta data on success
      */
@@ -70,10 +74,10 @@ class CloudinaryAdapter implements AdapterInterface
      *
      * @return bool
      */
-    public function rename($path, $newPath)
+    public function rename($path, $newPath): bool
     {
         try {
-            return (bool) $this->api->rename($path, $newPath);
+            return (bool)$this->api->rename($path, $newPath);
         } catch (\Exception $e) {
             return false;
         }
@@ -86,7 +90,7 @@ class CloudinaryAdapter implements AdapterInterface
      *
      * @return bool
      */
-    public function delete($path)
+    public function delete($path): bool
     {
         try {
             $response = $this->api->deleteFile($path);
@@ -104,13 +108,13 @@ class CloudinaryAdapter implements AdapterInterface
      *
      * @return bool
      */
-    public function deleteDir($dirname)
+    public function deleteDir($dirname): bool
     {
         try {
-            $response = $this->api->delete_resources_by_prefix(rtrim($dirname, '/').'/');
+            $response = $this->api->deleteResourcesByPrefix(rtrim($dirname, '/') . '/');
 
             return is_array($response['deleted']);
-        } catch (Api\Error $e) {
+        } catch (ApiError $e) {
             return false;
         }
     }
@@ -125,10 +129,10 @@ class CloudinaryAdapter implements AdapterInterface
      *
      * @return array|false
      */
-    public function createDir($dirname, Config $config)
+    public function createDir($dirname, Config $config): array
     {
         return [
-            'path' => rtrim($dirname, '/').'/',
+            'path' => rtrim($dirname, '/') . '/',
             'type' => 'dir',
         ];
     }
@@ -171,7 +175,7 @@ class CloudinaryAdapter implements AdapterInterface
         try {
             return [
                 'stream' => $this->api->content($path),
-                'path' => $path,
+                'path'   => $path,
             ];
         } catch (\Exception $e) {
             return false;
@@ -191,7 +195,7 @@ class CloudinaryAdapter implements AdapterInterface
      *
      * @return array
      */
-    public function listContents($directory = '', $recursive = false)
+    public function listContents($directory = '', $recursive = false): array
     {
         try {
             return $this->addDirNames($this->doListContents($directory));
@@ -298,12 +302,14 @@ class CloudinaryAdapter implements AdapterInterface
 
     private function normalizeMetadata($resource)
     {
-        return !$resource instanceof \ArrayObject && !is_array($resource) ? false : [
-            'type' => 'file',
-            'path' => $resource['path'],
-            'size' => isset($resource['bytes']) ? $resource['bytes'] : false,
-            'timestamp' => isset($resource['created_at']) ? strtotime($resource['created_at']) : false,
-            'version' => isset($resource['version']) ? $resource['version'] : 1,
-        ];
+        return !$resource instanceof \ArrayObject && !is_array($resource)
+            ? false
+            : [
+                'type'      => 'file',
+                'path'      => $resource['path'],
+                'size'      => isset($resource['bytes']) ? $resource['bytes'] : false,
+                'timestamp' => isset($resource['created_at']) ? strtotime($resource['created_at']) : false,
+                'version'   => isset($resource['version']) ? $resource['version'] : 1,
+            ];
     }
 }

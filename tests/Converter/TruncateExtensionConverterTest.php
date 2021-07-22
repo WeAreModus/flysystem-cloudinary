@@ -1,17 +1,16 @@
 <?php
 
-namespace Enl\Flysystem\Cloudinary\Test\Converter;
+namespace WeAreModus\Flysystem\Cloudinary\Test\Converter;
 
-use Enl\Flysystem\Cloudinary\Converter\PathConverterInterface;
-use Enl\Flysystem\Cloudinary\Converter\TruncateExtensionConverter;
 use PHPUnit\Framework\TestCase;
+use WeAreModus\Flysystem\Cloudinary\Converter\PathConverterInterface;
+use WeAreModus\Flysystem\Cloudinary\Converter\TruncateExtensionConverter;
 
 class TruncateExtensionConverterTest extends TestCase
 {
-    /** @var PathConverterInterface */
-    private $converter;
+    private PathConverterInterface $converter;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->converter = new TruncateExtensionConverter();
     }
@@ -25,7 +24,7 @@ class TruncateExtensionConverterTest extends TestCase
     {
         $this->assertEquals('file.png', $this->converter->idToPath([
             'public_id' => 'file',
-            'format' => 'png'
+            'format'    => 'png',
         ]));
     }
 
@@ -33,7 +32,7 @@ class TruncateExtensionConverterTest extends TestCase
     {
         $resource = [
             'public_id' => 'file',
-            'format' => 'png'
+            'format'    => 'png',
         ];
 
         $path = $this->converter->idToPath($resource);

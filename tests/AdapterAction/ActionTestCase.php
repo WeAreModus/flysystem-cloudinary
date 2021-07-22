@@ -1,17 +1,17 @@
 <?php
 
-namespace Enl\Flysystem\Cloudinary\Test\AdapterAction;
+namespace WeAreModus\Flysystem\Cloudinary\Test\AdapterAction;
 
-use Enl\Flysystem\Cloudinary\ApiFacade;
-use Enl\Flysystem\Cloudinary\CloudinaryAdapter;
 use PHPUnit\Framework\TestCase;
+use WeAreModus\Flysystem\Cloudinary\ApiFacade;
+use WeAreModus\Flysystem\Cloudinary\CloudinaryAdapter;
 
 abstract class ActionTestCase extends TestCase
 {
     /**
      * @return [CloudinaryAdapter, ApiFacade]
      */
-    final protected function buildAdapter()
+    final protected function buildAdapter(): array
     {
         $api = $this->prophesize(ApiFacade::class);
 

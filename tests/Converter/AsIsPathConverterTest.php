@@ -1,17 +1,17 @@
 <?php
 
-namespace Enl\Flysystem\Cloudinary\Test\Converter;
+namespace WeAreModus\Flysystem\Cloudinary\Test\Converter;
 
-use Enl\Flysystem\Cloudinary\Converter\AsIsPathConverter;
-use Enl\Flysystem\Cloudinary\Converter\PathConverterInterface;
 use PHPUnit\Framework\TestCase;
+use WeAreModus\Flysystem\Cloudinary\Converter\AsIsPathConverter;
+use WeAreModus\Flysystem\Cloudinary\Converter\PathConverterInterface;
 
 class AsIsPathConverterTest extends TestCase
 {
     /** @var PathConverterInterface */
     private $converter;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->converter = new AsIsPathConverter();
     }
@@ -24,7 +24,7 @@ class AsIsPathConverterTest extends TestCase
     public function testIdToPath()
     {
         $this->assertEquals('file.png', $this->converter->idToPath([
-            'public_id' => 'file.png'
+            'public_id' => 'file.png',
         ]));
     }
 
@@ -32,7 +32,7 @@ class AsIsPathConverterTest extends TestCase
     {
         $resource = [
             'public_id' => 'file',
-            'format' => 'png'
+            'format'    => 'png',
         ];
 
         $path = $this->converter->idToPath($resource);

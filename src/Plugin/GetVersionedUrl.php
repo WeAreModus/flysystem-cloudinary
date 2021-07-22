@@ -1,6 +1,6 @@
 <?php
 
-namespace Enl\Flysystem\Cloudinary\Plugin;
+namespace WeAreModus\Flysystem\Cloudinary\Plugin;
 
 class GetVersionedUrl extends AbstractPlugin
 {
@@ -11,7 +11,7 @@ class GetVersionedUrl extends AbstractPlugin
      *
      * @return string
      */
-    public function getMethod()
+    public function getMethod(): string
     {
         return 'getVersionedUrl';
     }
@@ -23,11 +23,11 @@ class GetVersionedUrl extends AbstractPlugin
      * api calls limit of your cloudinary plan.
      *
      * @param string $path
-     * @param array $options
+     * @param array  $options
      *
      * @return string
      */
-    public function handle($path, $options = [])
+    public function handle(string $path, array $options = []): string
     {
         $options[self::VERSION_OPTION] = $options[self::VERSION_OPTION] ?? $this->getLatestVersion($path);
 
@@ -39,7 +39,7 @@ class GetVersionedUrl extends AbstractPlugin
      *
      * @return int|mixed
      */
-    private function getLatestVersion($path)
+    private function getLatestVersion(string $path): mixed
     {
         $resource = $this->apiFacade->resource($path);
 

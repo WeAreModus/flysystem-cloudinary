@@ -5,6 +5,26 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [2.0.0] - 2021-07-22
+
+* **Updated** ApiFacade::upload() options to default to resource_type 'auto' _(adds video support)_
+* **Updated** PHPUnit version to `^9` to support PHP 8.0
+* **Updated** tests to work with PHPUnit `^9`
+* **Updated** Composer dependencies to latest versions
+* **Updated** ApiFacade to accommodate breaking changes in cloudinary_php `^2.0`
+* **Changed** ApiFacade no longer extends \Cloudinary\Api
+* **Added** ApiFacade defines its own deleteResourcesByPrefix
+* **Changed** references to delete_resources_by_prefix now use deleteResourcesByPrefix
+* **Added** explicit PHP types
+* **Changed** \Cloudinary\Api\Error to \Cloudinary\Api\Exception\ApiError
+* **Changed** ApiFacade::__construct() $options parameter to $cloudinaryOptions
+* **Updated** ApiFacade::__construct() to accept an additional $uploadOptions argument
+* **Updated** DataUri::__toString() to determine mime-type using only the first 1 MB of media content to avoid memory overflow problems with large files
+* **Removed** ApiFacade::deleteResources()
+* **Removed** ApiFacade::setUploadPreset()
+
+
+
 ## [1.3.0] - 2020-08-20
 
 * **Changed** Switched from [delete_resources](https://cloudinary.com/documentation/admin_api#delete_resources) to [destroy](https://cloudinary.com/documentation/image_upload_api_reference#destroy_method) API for file deletes. This allows to easier use `invalidate` option.

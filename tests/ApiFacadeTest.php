@@ -1,26 +1,26 @@
 <?php
 
-namespace Enl\Flysystem\Cloudinary\Test;
+namespace WeAreModus\Flysystem\Cloudinary\Test;
 
-use Enl\Flysystem\Cloudinary\ApiFacade;
+use Cloudinary\Configuration\Configuration;
 use PHPUnit\Framework\TestCase;
+use WeAreModus\Flysystem\Cloudinary\ApiFacade;
 
 /**
  * Class ApiFacadeTest
  * Almost all the tests here a very simple just because
  * ApiFacade delegates everything to different parts of Cloudinary API library
- * @package Enl\Flysystem\Cloudinary\Test
+ * @package WeAreModus\Flysystem\Cloudinary\Test
  */
 class ApiFacadeTest extends TestCase
 {
-    public static function setUpBeforeClass()
+    public static $cloudinary_url_result;
+    public static $fopen_result;
+
+    public static function setUpBeforeClass(): void
     {
         require_once __DIR__ . '/fixtures/functions.php';
     }
-
-    public static $cloudinary_url_result;
-
-    public static $fopen_result;
 
     public function testContent()
     {
@@ -44,18 +44,8 @@ class ApiFacadeTest extends TestCase
     public function testConfigure()
     {
         $api = new ApiFacade();
-        $api->configure(['upload_preset' => 'preset']);
+        $api->configure(['api' => ['callback_url' => 'http://test.test']]);
 
-        $actual = \Cloudinary::config_get('upload_preset');
-
-        $this->assertEquals('preset', $actual);
-    }
-
-    public function testSetUploadPreset()
-    {
-        $api = new ApiFacade();
-        $api->setUploadPreset('preset');
-
-        $this->assertEquals('preset', \Cloudinary::config_get('upload_preset'));
+        $this->assertEquals('http://test.test', Configuration::instance()->api->callbackUrl);
     }
 }

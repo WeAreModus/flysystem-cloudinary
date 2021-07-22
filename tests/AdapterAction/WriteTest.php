@@ -1,8 +1,8 @@
 <?php
 
-namespace Enl\Flysystem\Cloudinary\Test\AdapterAction;
+namespace WeAreModus\Flysystem\Cloudinary\Test\AdapterAction;
 
-use Cloudinary\Error;
+use Cloudinary\Api\Exception\ApiError;
 use League\Flysystem\Config;
 
 class WriteTest extends ActionTestCase
@@ -12,7 +12,7 @@ class WriteTest extends ActionTestCase
         list($cloudinary, $api) = $this->buildAdapter();
         $api->upload('path', 'contents', false)
             ->shouldBeCalled()
-            ->willThrow(Error::class);
+            ->willThrow(ApiError::class);
 
         $this->assertFalse($cloudinary->write('path', 'contents', new Config()));
     }
@@ -22,7 +22,7 @@ class WriteTest extends ActionTestCase
         list($cloudinary, $api) = $this->buildAdapter();
         $api->upload('path', '', false)
             ->shouldBeCalled()
-            ->willThrow(Error::class);
+            ->willThrow(ApiError::class);
 
         $this->assertFalse($cloudinary->writeStream('path', fopen('php://memory', 'r+'), new Config()));
     }
@@ -39,8 +39,8 @@ class WriteTest extends ActionTestCase
         list($cloudinary, $api) = $this->buildAdapter();
         $api->upload($path, is_resource($content) ? stream_get_contents($content) : $content, false)->willReturn([
             'public_id' => $path,
-            'path' => $path,
-            'bytes' => 123123
+            'path'      => $path,
+            'bytes'     => 123123,
         ]);
         $response = $cloudinary->$method($path, $content, new Config());
 
@@ -48,11 +48,11 @@ class WriteTest extends ActionTestCase
         $this->assertEquals('test-path', $response['path']);
     }
 
-    public function writeParametersProvider()
+    public function writeParametersProvider(): array
     {
         return [
-            'write' => ['write', 'test-path', 'content'],
-            'writeStream' => ['writeStream', 'test-path', fopen('php://memory', 'r+')]
+            'write'       => ['write', 'test-path', 'content'],
+            'writeStream' => ['writeStream', 'test-path', fopen('php://memory', 'r+')],
         ];
     }
 }

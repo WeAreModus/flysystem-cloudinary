@@ -1,8 +1,8 @@
 <?php
 
-namespace Enl\Flysystem\Cloudinary\Test\AdapterAction;
+namespace WeAreModus\Flysystem\Cloudinary\Test\AdapterAction;
 
-use Cloudinary\Error;
+use Cloudinary\Api\Exception\ApiError;
 
 class ReadTest extends ActionTestCase
 {
@@ -10,7 +10,7 @@ class ReadTest extends ActionTestCase
     {
         list($cloudinary, $api) = $this->buildAdapter();
 
-        $api->content('file')->shouldBeCalled()->willThrow(Error::class);
+        $api->content('file')->shouldBeCalled()->willThrow(ApiError::class);
 
         $this->assertFalse($cloudinary->read('file'));
         $this->assertFalse($cloudinary->readStream('file'));
@@ -31,8 +31,8 @@ class ReadTest extends ActionTestCase
         $api->content('file')->willReturn(fopen('php://memory', 'r+'));
         $response = $cloudinary->readStream('file');
 
-        $this->assertInternalType('array', $response);
+        $this->assertIsArray($response);
         $this->assertEquals('file', $response['path']);
-        $this->assertInternalType('resource', $response['stream']);
+        $this->assertIsResource($response['stream']);
     }
 }

@@ -1,22 +1,16 @@
 <?php
 
-namespace Enl\Flysystem\Cloudinary\Plugin;
+namespace WeAreModus\Flysystem\Cloudinary\Plugin;
 
-use Enl\Flysystem\Cloudinary\ApiFacade;
 use League\Flysystem\FilesystemInterface;
 use League\Flysystem\PluginInterface;
+use WeAreModus\Flysystem\Cloudinary\ApiFacade;
 
 abstract class AbstractPlugin implements PluginInterface
 {
-    /**
-     * @var FilesystemInterface
-     */
-    protected $filesystem;
+    protected FilesystemInterface $filesystem;
 
-    /**
-     * @var ApiFacade
-     */
-    protected $apiFacade;
+    protected ApiFacade $apiFacade;
 
     public function __construct(ApiFacade $facade)
     {
