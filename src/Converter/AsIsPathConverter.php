@@ -2,8 +2,6 @@
 
 namespace WeAreModus\Flysystem\Cloudinary\Converter;
 
-use Cloudinary\Api\ApiResponse;
-
 /**
  * Class AsIsPathConverter
  * Default implementation of PathConverterInterface just does nothing.
@@ -18,7 +16,7 @@ class AsIsPathConverter implements PathConverterInterface
      *
      * @return string
      */
-    public function pathToId(string $path): string
+    public function pathToId($path)
     {
         return $path;
     }
@@ -26,11 +24,11 @@ class AsIsPathConverter implements PathConverterInterface
     /**
      * Converts id to path
      *
-     * @param ApiResponse $id
+     * @param array|\Cloudinary\Api\ApiResponse $id
      *
      * @return string
      */
-    public function idToPath(array $id): string
+    public function idToPath($id)
     {
         return $id['public_id'];
     }

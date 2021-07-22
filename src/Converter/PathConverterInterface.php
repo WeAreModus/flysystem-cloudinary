@@ -20,14 +20,14 @@ interface PathConverterInterface
      *
      * @return string
      */
-    public function pathToId(string $path): string;
+    public function pathToId($path);
 
     /**
      * Converts id to path
      *
-     * @param array $id
+     * @param array|\Cloudinary\Api\ApiResponse $id
      *
      * @return string
      */
-    public function idToPath(array $id): string;
+    public function idToPath($id);
 }

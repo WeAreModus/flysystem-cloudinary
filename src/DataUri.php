@@ -12,8 +12,8 @@ namespace WeAreModus\Flysystem\Cloudinary;
  */
 class DataUri
 {
-    private string $content;
-    private \finfo $finfo;
+    private $content;
+    private $finfo;
 
     /**
      * @param string $content
@@ -26,7 +26,7 @@ class DataUri
     /**
      * @return \finfo
      */
-    private function getFileInfo(): \finfo
+    private function getFileInfo()
     {
         if (!$this->finfo) {
             $this->finfo = new \finfo(FILEINFO_MIME_TYPE);

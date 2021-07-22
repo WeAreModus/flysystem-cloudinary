@@ -11,7 +11,7 @@ class TruncateExtensionConverter implements PathConverterInterface
      *
      * @return string
      */
-    public function pathToId(string $path): string
+    public function pathToId($path)
     {
         $extension = pathinfo($path, PATHINFO_EXTENSION);
 
@@ -23,11 +23,11 @@ class TruncateExtensionConverter implements PathConverterInterface
     /**
      * Converts id to path
      *
-     * @param array $id
+     * @param array|\Cloudinary\Api\ApiResponse $id
      *
      * @return string
      */
-    public function idToPath(array $id): string
+    public function idToPath($id)
     {
         return $id['public_id'] . '.' . $id['format'];
     }
