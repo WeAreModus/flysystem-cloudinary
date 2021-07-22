@@ -60,10 +60,11 @@ The library supports [Cloudinary Transformations](doc/transformations.md)!
 
 This fork includes some essential changes needed for my use-case. See CHANGELOG.md for a full list of changes, but here are the cliff notes:
 
-- Added explicit PHP types _(this will prevent compatibility with PHP `<7.4`)_
-- Updated dependencies _(PHP >=7.4, PHPUnit ^9, cloudinary_php ^2, php_codesniffer 3.*)_
+- Upload settings default to resource_type 'auto' in order to support video upload in addition to images
 - DataUri now reads the mime-type of media using only the first 1 MB, in order to prevent memory overflow for large files due to `finfo->buffer()`
 - ApiFacade constructor now accepts an uploadOptions argument containing options that are passed through to the Cloudinary SDK's upload function
+- Added explicit PHP types _(this will prevent compatibility with PHP `<7.4`)_
+- Updated dependencies _(PHP >=7.4, PHPUnit ^9, cloudinary_php ^2, php_codesniffer 3.*)_
 
 ### Using with Laravel-MediaLibrary
 

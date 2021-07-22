@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [2.0.0] - 2021-07-22
 
+* **Updated** ApiFacade::upload() options to default to resource_type 'auto' _(adds video support)_
 * **Updated** PHPUnit version to `^9` to support PHP 8.0
 * **Updated** tests to work with PHPUnit `^9`
 * **Updated** Composer dependencies to latest versions

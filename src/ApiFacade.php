@@ -64,7 +64,6 @@ class ApiFacade
      */
     public function resource($path, $options = [])
     {
-        // $resource = parent::resource($this->converter->pathToId($path));
         $resource = (new AdminApi())->asset($this->converter->pathToId($path));
 
         return $this->addPathToResource($resource);
