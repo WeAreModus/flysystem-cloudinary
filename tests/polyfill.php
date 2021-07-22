@@ -7,7 +7,7 @@
  * file that was distributed with this source code.
  *
  * @copyright Copyright (c) Ben Ramsey (http://benramsey.com)
- * @license http://opensource.org/licenses/MIT MIT
+ * @license   http://opensource.org/licenses/MIT MIT
  */
 if (!function_exists('array_column')) {
     /**
@@ -17,14 +17,15 @@ if (!function_exists('array_column')) {
      * Optionally, you may provide an $indexKey to index the values in the returned
      * array by the values from the $indexKey column in the input array.
      *
-     * @param array $input A multi-dimensional array (record set) from which to pull
-     *                     a column of values.
+     * @param array $input     A multi-dimensional array (record set) from which to pull
+     *                         a column of values.
      * @param mixed $columnKey The column of values to return. This value may be the
      *                         integer key of the column you wish to retrieve, or it
      *                         may be the string key name for an associative array.
-     * @param mixed $indexKey (Optional.) The column to use as the index/keys for
-     *                        the returned array. This value may be the integer key
-     *                        of the column, or it may be the string key name.
+     * @param mixed $indexKey  (Optional.) The column to use as the index/keys for
+     *                         the returned array. This value may be the integer key
+     *                         of the column, or it may be the string key name.
+     *
      * @return array
      */
     function array_column($input = null, $columnKey = null, $indexKey = null)
@@ -64,13 +65,13 @@ if (!function_exists('array_column')) {
             return false;
         }
         $paramsInput = $params[0];
-        $paramsColumnKey = ($params[1] !== null) ? (string) $params[1] : null;
+        $paramsColumnKey = ($params[1] !== null) ? (string)$params[1] : null;
         $paramsIndexKey = null;
         if (isset($params[2])) {
             if (is_float($params[2]) || is_int($params[2])) {
-                $paramsIndexKey = (int) $params[2];
+                $paramsIndexKey = (int)$params[2];
             } else {
-                $paramsIndexKey = (string) $params[2];
+                $paramsIndexKey = (string)$params[2];
             }
         }
         $resultArray = [];
@@ -79,7 +80,7 @@ if (!function_exists('array_column')) {
             $keySet = $valueSet = false;
             if ($paramsIndexKey !== null && array_key_exists($paramsIndexKey, $row)) {
                 $keySet = true;
-                $key = (string) $row[$paramsIndexKey];
+                $key = (string)$row[$paramsIndexKey];
             }
             if ($paramsColumnKey === null) {
                 $valueSet = true;

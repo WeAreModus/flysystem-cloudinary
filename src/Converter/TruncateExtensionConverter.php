@@ -1,8 +1,6 @@
 <?php
 
-namespace Enl\Flysystem\Cloudinary\Converter;
-
-use Cloudinary\Api\Response;
+namespace WeAreModus\Flysystem\Cloudinary\Converter;
 
 class TruncateExtensionConverter implements PathConverterInterface
 {
@@ -10,25 +8,27 @@ class TruncateExtensionConverter implements PathConverterInterface
      * Converts path to public Id
      *
      * @param string $path
+     *
      * @return string
      */
-    public function pathToId($path)
+    public function pathToId(string $path): string
     {
         $extension = pathinfo($path, PATHINFO_EXTENSION);
 
         return $extension
-            ? substr($path, 0, - (strlen($extension) + 1))
+            ? substr($path, 0, -(strlen($extension) + 1))
             : $path;
     }
 
     /**
      * Converts id to path
      *
-     * @param Response $resource
+     * @param array $id
+     *
      * @return string
      */
-    public function idToPath($resource)
+    public function idToPath(array $id): string
     {
-        return $resource['public_id'] . '.' . $resource['format'];
+        return $id['public_id'] . '.' . $id['format'];
     }
 }

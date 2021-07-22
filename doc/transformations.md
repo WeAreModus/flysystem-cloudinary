@@ -27,10 +27,10 @@ There are two plugins: one of them returns `url` of transformed image, another o
 
 ``` php
 <?php
-use Enl\Flysystem\Cloudinary\ApiFacade as CloudinaryClient;
-use Enl\Flysystem\Cloudinary\CloudinaryAdapter;
-use Enl\Flysystem\Cloudinary\Plugin\ReadTransformation;
-use Enl\Flysystem\Cloudinary\Plugin\GetUrl;
+use WeAreModus\Flysystem\Cloudinary\ApiFacade as CloudinaryClient;
+use WeAreModus\Flysystem\Cloudinary\CloudinaryAdapter;
+use WeAreModus\Flysystem\Cloudinary\Plugin\ReadTransformation;
+use WeAreModus\Flysystem\Cloudinary\Plugin\GetUrl;
 use League\Flysystem\Filesystem;
 
 include __DIR__ . '/vendor/autoload.php';

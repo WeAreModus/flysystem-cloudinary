@@ -1,12 +1,12 @@
 <?php
 
-namespace Enl\Flysystem\Cloudinary\Test\AdapterAction;
+namespace WeAreModus\Flysystem\Cloudinary\Test\AdapterAction;
 
 use League\Flysystem\Config;
 
 class CreateDirTest extends ActionTestCase
 {
-    public function createDirProvider()
+    public function createDirProvider(): array
     {
         return [
             ['path', ['path' => 'path/', 'type' => 'dir']],
@@ -16,6 +16,7 @@ class CreateDirTest extends ActionTestCase
 
     /**
      * @dataProvider createDirProvider
+     *
      * @param $path
      * @param $expected
      */

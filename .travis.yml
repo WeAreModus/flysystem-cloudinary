@@ -17,6 +17,7 @@ matrix:
         - EXECUTE_COVERAGE=true
     - php: 7.3
     - php: 7.4
+    - php: 8.0
 
 env:
   - COMPOSER_OPTS=""

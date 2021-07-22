@@ -1,6 +1,6 @@
 <?php
 
-namespace Enl\Flysystem\Cloudinary;
+namespace WeAreModus\Flysystem\Cloudinary;
 
 /**
  * Class DataUri
@@ -12,16 +12,13 @@ namespace Enl\Flysystem\Cloudinary;
  */
 class DataUri
 {
-    /** @var string */
-    private $content;
-
-    /** @var \finfo */
-    private $finfo;
+    private string $content;
+    private \finfo $finfo;
 
     /**
      * @param string $content
      */
-    public function __construct($content)
+    public function __construct(string $content)
     {
         $this->content = $content;
     }
@@ -29,7 +26,7 @@ class DataUri
     /**
      * @return \finfo
      */
-    private function getFileInfo()
+    private function getFileInfo(): \finfo
     {
         if (!$this->finfo) {
             $this->finfo = new \finfo(FILEINFO_MIME_TYPE);
@@ -45,7 +42,7 @@ class DataUri
     {
         return sprintf(
             'data:%s;base64,%s',
-            $this->getFileInfo()->buffer($this->content),
+            $this->getFileInfo()->buffer(substr($this->content, 0, 1024 * 1024)),
             base64_encode($this->content)
         );
     }

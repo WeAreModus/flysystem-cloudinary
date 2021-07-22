@@ -1,8 +1,8 @@
 <?php
 
-namespace Enl\Flysystem\Cloudinary\Test\AdapterAction;
+namespace WeAreModus\Flysystem\Cloudinary\Test\AdapterAction;
 
-use Cloudinary\Api\Error;
+use Cloudinary\Api\Exception\ApiError;
 
 class DeleteTest extends ActionTestCase
 {
@@ -16,7 +16,7 @@ class DeleteTest extends ActionTestCase
     public function testReturnsFalseOnException()
     {
         list($cloudinary, $api) = $this->buildAdapter();
-        $api->deleteFile('file')->willThrow(Error::class);
+        $api->deleteFile('file')->willThrow(ApiError::class);
         $this->assertFalse($cloudinary->delete('file'));
     }
 
@@ -30,7 +30,7 @@ class DeleteTest extends ActionTestCase
     public function testDeleteDirSuccess()
     {
         list($cloudinary, $api) = $this->buildAdapter();
-        $api->delete_resources_by_prefix('path/')->willReturn(['deleted' => []]);
+        $api->deleteResourcesByPrefix('path/')->willReturn(['deleted' => []]);
 
         $this->assertTrue($cloudinary->deleteDir('path'));
         $this->assertTrue($cloudinary->deleteDir('path/'), 'deleteDir must be idempotent');
@@ -39,7 +39,7 @@ class DeleteTest extends ActionTestCase
     public function testDeleteDirFailure()
     {
         list($cloudinary, $api) = $this->buildAdapter();
-        $api->delete_resources_by_prefix('path/')->willThrow(Error::class);
+        $api->deleteResourcesByPrefix('path/')->willThrow(ApiError::class);
         $this->assertFalse($cloudinary->deleteDir('path/'));
     }
 }

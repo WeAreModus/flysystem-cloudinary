@@ -6,7 +6,7 @@ As you might know, Cloudinary does not include file's extension in its `public_i
 This interface is as simple as this:
 
 ```php
-namespace Enl\Flysystem\Cloudinary\Converter;
+namespace WeAreModus\Flysystem\Cloudinary\Converter;
 
 interface PathConverterInterface
 {
@@ -34,17 +34,27 @@ By default, Api facade uses `AsIsPathConverter` which performs no conversions. I
 
 
 ```php
-use Enl\Flysystem\Cloudinary\ApiFacade;
-use Enl\Flysystem\Cloudinary\Converter\TruncateExtensionConverter;
+use WeAreModus\Flysystem\Cloudinary\ApiFacade;
+use WeAreModus\Flysystem\Cloudinary\Converter\TruncateExtensionConverter;
 
-$options = [
-   'cloud_name' => 'your-cloudname-here',
-   'api_key' => 'api-key',
-   'api_secret' => 'You-know-what-to-do',
-   'overwrite' => true, // set this to true if you want to overwrite existing files using $filesystem->write();
+$cloudinaryOptions = [
+   'cloud_name' => 'your-cloudname',
+   'api_key' => 'your-api-key',
+   'api_secret' => 'your-api-secret',
+   'overwrite' => true, // Set this to true if you want to overwrite existing files using $filesystem->write();
 ];
 
-$client = new ApiFacade($options, new TruncateExtensionConverter());
+$uploadOptions = [
+    'eager' => [
+        ['fetch_format' => 'mp4', 'format' => '', 'video_codec' => 'h264', 'quality' => '70'],
+        ['fetch_format' => 'png', 'format' => '', 'quality' => '70'],
+    ],
+    'eager_async' => 'true',
+    'eager_notification_url' => 'https://mysite.test/webhook/eager',
+    'notification_url' => 'https://mysite.test/webhook/upload',
+];
+
+$client = new ApiFacade($cloudinaryOptions, $uploadOptions, new TruncateExtensionConverter());
 ```
 
 TruncateExtensionConverter

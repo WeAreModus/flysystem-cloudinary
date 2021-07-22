@@ -1,15 +1,15 @@
 <?php
 
-namespace Enl\Flysystem\Cloudinary;
+namespace WeAreModus\Flysystem\Cloudinary;
 
-use Enl\Flysystem\Cloudinary\Test\ApiFacadeTest;
+use WeAreModus\Flysystem\Cloudinary\Test\ApiFacadeTest;
 
-function cloudinary_url($path, array $parameters = [])
+function cloudinary_url(string $path, array $parameters = [])
 {
     return ApiFacadeTest::$cloudinary_url_result;
 }
 
-function fopen($path, $attributes)
+function fopen(string $path, string $attributes)
 {
     return ApiFacadeTest::$fopen_result;
 }

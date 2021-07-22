@@ -1,36 +1,35 @@
 <?php
 
-namespace Enl\Flysystem\Cloudinary;
+namespace WeAreModus\Flysystem\Cloudinary;
 
-use Cloudinary\Api as BaseApi;
-use Cloudinary\Uploader;
-use Enl\Flysystem\Cloudinary\Converter\AsIsPathConverter;
-use Enl\Flysystem\Cloudinary\Converter\PathConverterInterface;
+use Cloudinary\Api\Admin\AdminApi;
+use Cloudinary\Api\Upload\UploadApi;
+use Cloudinary\Configuration\Configuration;
+use WeAreModus\Flysystem\Cloudinary\Converter\AsIsPathConverter;
+use WeAreModus\Flysystem\Cloudinary\Converter\PathConverterInterface;
 
 /**
  * Class ApiFacade.
  */
-class ApiFacade extends BaseApi
+class ApiFacade
 {
     /**
      * @var PathConverterInterface
      */
-    private $converter;
+    private PathConverterInterface $converter;
+    private array $uploadOptions;
 
     /**
-     * @var array
-     */
-    private $deleteOptions = [];
-
-    /**
-     * @param array $options
+     * @param array                       $cloudinaryOptions
      * @param PathConverterInterface|null $converter
      */
-    public function __construct(array $options = [], PathConverterInterface $converter = null)
+    public function __construct(array $cloudinaryOptions = [], array $uploadOptions = [], PathConverterInterface $converter = null)
     {
-        if (count($options)) {
-            $this->configure($options);
+        if (count($cloudinaryOptions)) {
+            $this->configure($cloudinaryOptions);
         }
+
+        $this->uploadOptions = $uploadOptions;
         $this->converter = $converter ?: new AsIsPathConverter();
     }
 
@@ -44,11 +43,12 @@ class ApiFacade extends BaseApi
      */
     public function configure(array $options = [])
     {
-        \Cloudinary::config($options);
+        Configuration::instance($options);
     }
 
     /**
      * Sets the options for resource deleting operation.
+     *
      * @param array $options
      */
     public function setDeleteOptions(array $options)
@@ -57,21 +57,22 @@ class ApiFacade extends BaseApi
     }
 
     /**
-     * @param $path
+     * @param       $path
      * @param array $options
      *
-     * @return BaseApi\Response
+     * @return array
      */
     public function resource($path, $options = [])
     {
-        $resource = parent::resource($this->converter->pathToId($path));
+        // $resource = parent::resource($this->converter->pathToId($path));
+        $resource = (new AdminApi())->asset($this->converter->pathToId($path));
 
         return $this->addPathToResource($resource);
     }
 
     public function resources($options = [])
     {
-        $response = parent::resources($options);
+        $response = (new AdminApi())->assets($options);
         $response['resources'] = array_map([$this, 'addPathToResource'], $response['resources']);
 
         return $response;
@@ -79,64 +80,30 @@ class ApiFacade extends BaseApi
 
     public function deleteFile($path, array $options = [])
     {
-        return Uploader::destroy($this->converter->pathToId($path), $options);
+        return (new UploadApi())->destroy($this->converter->pathToId($path), $options);
     }
 
-    /**
-     * @deprecated
-     * @param array $paths
-     * @param array $options
-     *
-     * @return BaseApi\Response
-     */
-    public function deleteResources(array $paths, array $options = [])
+    public function deleteResourcesByPrefix($prefix, $options = [])
     {
-        @trigger_error(
-            '\Enl\Flysystem\Cloudinary\ApiFacade::deleteResources() is deprecated'
-            . ' since 1.3.0, use `deleteFile` instead. Will be removed in 2.0',
-            E_USER_DEPRECATED
-        );
-
-        $map = [];
-
-        foreach ($paths as $path) {
-            $map[$this->converter->pathToId($path)] = $path;
-        }
-
-        $response = parent::delete_resources(array_keys($map), array_merge($this->deleteOptions, $options));
-
-        $deleted = [];
-
-        foreach ($response['deleted'] as $id => $status) {
-            $deleted[$map[$id]] = $status;
-        }
-        $response['deleted'] = $deleted;
-
-        return $response;
-    }
-
-    /**
-     * @param string $preset
-     */
-    public function setUploadPreset($preset)
-    {
-        $this->configure(['upload_preset' => $preset]);
+        return (new AdminApi())->deleteAssetsByPrefix($prefix, $options);
     }
 
     /**
      * @param string $path
      * @param string $contents
-     * @param bool $overwrite
+     * @param bool   $overwrite
+     *
      * @return array
      */
-    public function upload($path, $contents, $overwrite = false)
+    public function upload(string $path, string $contents, bool $overwrite = false)
     {
-        $options = [
-            'public_id' => $this->converter->pathToId($path),
-            'overwrite' => $overwrite
-        ];
+        $options = array_merge([
+            'resource_type' => 'auto',
+            'public_id'     => $this->converter->pathToId($path),
+            'overwrite'     => $overwrite,
+        ], $this->uploadOptions);
 
-        return $this->addPathToResource(Uploader::upload(new DataUri($contents), $options));
+        return $this->addPathToResource((new UploadApi())->upload(new DataUri($contents), $options));
     }
 
     /**
@@ -145,9 +112,9 @@ class ApiFacade extends BaseApi
      *
      * @return array
      */
-    public function rename($path, $newPath)
+    public function rename(string $path, string $newPath)
     {
-        $resource = Uploader::rename(
+        $resource = (new UploadApi())->rename(
             $this->converter->pathToId($path),
             $this->converter->pathToId($newPath)
         );
@@ -159,11 +126,11 @@ class ApiFacade extends BaseApi
      * Returns content of file with given public id.
      *
      * @param string $path
-     * @param array $options
+     * @param array  $options
      *
      * @return resource
      */
-    public function content($path, array $options = [])
+    public function content(string $path, array $options = [])
     {
         return fopen($this->url($path, $options), 'r');
     }
@@ -176,7 +143,7 @@ class ApiFacade extends BaseApi
      *
      * @return string
      */
-    public function url($path, array $options = [])
+    public function url(string $path, array $options = []): string
     {
         return cloudinary_url($this->converter->pathToId($path), $options);
     }

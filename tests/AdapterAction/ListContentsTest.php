@@ -1,8 +1,8 @@
 <?php
 
-namespace Enl\Flysystem\Cloudinary\Test\AdapterAction;
+namespace WeAreModus\Flysystem\Cloudinary\Test\AdapterAction;
 
-use Cloudinary\Error;
+use Cloudinary\Api\Exception\ApiError;
 use Prophecy\Argument;
 
 class ListContentsTest extends ActionTestCase
@@ -10,7 +10,7 @@ class ListContentsTest extends ActionTestCase
     public function testReturnsEmptyArrayOnError()
     {
         list($cloudinary, $api) = $this->buildAdapter();
-        $api->resources(Argument::any())->shouldBeCalled()->willThrow(Error::class);
+        $api->resources(Argument::any())->shouldBeCalled()->willThrow(ApiError::class);
         $this->assertEquals([], $cloudinary->listContents());
     }
 
@@ -32,14 +32,14 @@ class ListContentsTest extends ActionTestCase
         ];
 
         $api->resources($request)->shouldBeCalled()->willReturn([
-            'resources' => array_slice($expected, 0, 2),
-            'next_cursor' => 'cursor'
+            'resources'   => array_slice($expected, 0, 2),
+            'next_cursor' => 'cursor',
         ]);
 
         $api->resources(array_merge($request, ['next_cursor' => 'cursor']))
             ->shouldBeCalled()
             ->willReturn([
-                'resources' => array_slice($expected, 2)
+                'resources' => array_slice($expected, 2),
             ]);
 
         $actual = $cloudinary->listContents();
@@ -79,15 +79,15 @@ class ListContentsTest extends ActionTestCase
         $version = time();
 
         $api->resources(Argument::any())->willReturn([
-            'resources' => [compact('public_id', 'path', 'bytes', 'created_at', 'version')]
+            'resources' => [compact('public_id', 'path', 'bytes', 'created_at', 'version')],
         ]);
 
         $expected = [
-            'type' => 'file',
-            'path' => $public_id,
-            'size' => $bytes,
+            'type'      => 'file',
+            'path'      => $public_id,
+            'size'      => $bytes,
             'timestamp' => strtotime($created_at),
-            'version' => $version,
+            'version'   => $version,
         ];
 
         $actual = $cloudinary->listContents()[0];

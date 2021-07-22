@@ -1,31 +1,35 @@
 {
-  "name": "enl/flysystem-cloudinary",
+  "name": "wearemodus/flysystem-cloudinary",
   "description": "Cloudinary adapter for Flysystem.",
   "license": "MIT",
   "authors": [
     {
       "name": "Alex Panshin",
       "email": "deadyaga@gmail.com"
+    },
+    {
+      "name": "Dalton Pierce",
+      "email": "dnnp2011@gmail.com"
     }
   ],
   "require": {
-    "php": ">=5.4.0",
+    "php": ">=7.4",
     "ext-fileinfo": "*",
-    "league/flysystem": "^1.0.26",
-    "cloudinary/cloudinary_php": "^1.8.0"
+    "league/flysystem": "^1.1",
+    "cloudinary/cloudinary_php": "^2"
   },
   "require-dev": {
-    "squizlabs/php_codesniffer": "^2.3.1",
-    "phpunit/phpunit": "^6"
+    "squizlabs/php_codesniffer": "3.*",
+    "phpunit/phpunit": "^9"
   },
   "autoload": {
     "psr-4": {
-      "Enl\\Flysystem\\Cloudinary\\": "src/"
+      "WeAreModus\\Flysystem\\Cloudinary\\": "src/"
     }
   },
   "autoload-dev": {
     "psr-4": {
-      "Enl\\Flysystem\\Cloudinary\\Test\\": "tests/"
+      "WeAreModus\\Flysystem\\Cloudinary\\Test\\": "tests/"
     },
     "files": [
       "tests/polyfill.php"

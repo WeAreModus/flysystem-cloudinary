@@ -1,12 +1,12 @@
 <?php
 
-namespace Enl\Flysystem\Cloudinary\Test\AdapterAction;
+namespace WeAreModus\Flysystem\Cloudinary\Test\AdapterAction;
 
-use Cloudinary\Api\Error;
+use Cloudinary\Api\Exception\ApiError;
 
 class GetMetadataTest extends ActionTestCase
 {
-    public function metadataProvider()
+    public function metadataProvider(): array
     {
         return [
             ['getMetadata'],
@@ -19,6 +19,7 @@ class GetMetadataTest extends ActionTestCase
 
     /**
      * @dataProvider  metadataProvider
+     *
      * @param $method
      */
     public function testMetadataCallsSuccess($method)
@@ -33,11 +34,11 @@ class GetMetadataTest extends ActionTestCase
         $api->resource('file')->willReturn(compact('public_id', 'path', 'bytes', 'created_at', 'version'));
 
         $expected = [
-            'type' => 'file',
-            'path' => $public_id,
-            'size' => $bytes,
+            'type'      => 'file',
+            'path'      => $public_id,
+            'size'      => $bytes,
             'timestamp' => strtotime($created_at),
-            'version' => $version,
+            'version'   => $version,
         ];
         $actual = $cloudinary->$method($public_id);
 
@@ -46,12 +47,13 @@ class GetMetadataTest extends ActionTestCase
 
     /**
      * @param $method
+     *
      * @dataProvider metadataProvider
      */
     public function testMetadataCallsFailure($method)
     {
         list($cloudinary, $api) = $this->buildAdapter();
-        $api->resource('path')->willThrow(Error::class);
+        $api->resource('path')->willThrow(ApiError::class);
 
         $this->assertFalse($cloudinary->{$method}('path'));
     }

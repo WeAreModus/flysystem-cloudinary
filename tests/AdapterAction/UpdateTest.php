@@ -1,8 +1,8 @@
 <?php
 
-namespace Enl\Flysystem\Cloudinary\Test\AdapterAction;
+namespace WeAreModus\Flysystem\Cloudinary\Test\AdapterAction;
 
-use Cloudinary\Error;
+use Cloudinary\Api\Exception\ApiError;
 use League\Flysystem\Config;
 use Prophecy\Argument;
 
@@ -11,7 +11,7 @@ class UpdateTest extends ActionTestCase
     public function testReturnsFalseOnFailure()
     {
         list($cloudinary, $api) = $this->buildAdapter();
-        $api->upload(Argument::any(), Argument::any(), Argument::any())->willThrow(Error::class);
+        $api->upload(Argument::any(), Argument::any(), Argument::any())->willThrow(ApiError::class);
         $this->assertFalse($cloudinary->update('path', 'contents', new Config()));
     }
 
@@ -20,8 +20,8 @@ class UpdateTest extends ActionTestCase
         list($cloudinary, $api) = $this->buildAdapter();
         $api->upload('test-path', 'contents', true)->willReturn([
             'public_id' => 'test-path',
-            'path' => 'test-path',
-            'bytes' => 123123
+            'path'      => 'test-path',
+            'bytes'     => 123123,
         ]);
 
         $response = $cloudinary->update('test-path', 'contents', new Config());
